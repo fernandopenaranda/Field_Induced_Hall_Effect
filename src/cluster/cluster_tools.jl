@@ -38,8 +38,8 @@ end
 postprocessing(PID::Number) = postprocessing(string(PID))
 function postprocessing(PID::String)
     destination =  homedir() * "/Projects/Field_Induced_Hall_Effect/" * PID 
-    calcfile = destination * "/merged_calculation.jld"
-    presfile = destination * "/merged_presets.jld"
+    calcfile = destination * "_merged_calculation.jld"
+    presfile = destination * "_merged_presets.jld"
     pid_folder =  find_folder(PID)
     subfolders = filter(isdir, joinpath.(pid_folder, readdir(pid_folder)))
     first_vector = nothing
