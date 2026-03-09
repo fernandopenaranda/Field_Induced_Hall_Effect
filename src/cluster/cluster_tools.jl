@@ -34,9 +34,8 @@ function find_folder(target::AbstractString)
 end
 
 
-
-postprocessing(PID::Number) = postprocessing(string(PID))
-function postprocessing(PID::String)
+processing(PID::Number) = processing(string(PID))
+function processing(PID::String)
     destination =  homedir() * "/Projects/Field_Induced_Hall_Effect/" * PID 
     calcfile = destination * "_merged_calculation.jld"
     presfile = destination * "_merged_presets.jld"
