@@ -39,20 +39,21 @@ topbounds = [my_subcube[1][2], my_subcube[2][2], my_subcube[3][2]]
 
 p = modelpresets(;t1 =t1 ,t2 =t2, t3=t3, a= a, c=c)
 keyws = (
-    dirj=dirj, 
-    dirE=dirE, 
-    dirB=dirB, 
-    T = T, 
-    evals = evals, 
-    Ω_MM_switch = omega_switch, 
-    PS_switch = ps_switch, 
-    QM_switch = qm_switch, 
+    dirj = dirj,
+    dirE = dirE,
+    dirB = dirB,
+    T = T,
+    evals = evals,
+    omega_MM_switch = omega_switch,
+    PS_switch = ps_switch,
+    QM_switch = qm_switch,
     fermi_surface = fermi_surface,
-    ϵ = epsilon, 
-    which_mm = which_mm, 
-    integration_method = integration_method, 
-    botbounds = botbounds, 
-    topbounds = topbounds)
+    epsilon = epsilon,
+    which_mm = which_mm,
+    integration_method = integration_method,
+    botbounds = botbounds,
+    topbounds = topbounds,
+)
 
 sijks = Float64[]
 for mu in muvec  

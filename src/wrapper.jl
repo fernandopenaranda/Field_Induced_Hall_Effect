@@ -16,8 +16,8 @@ end
 structure wrapper botbounds and topbounds in [-0.5,0.5]
 """
 function sigma_abc_TaRh2B2_wrapper(p; dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-        Ω_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
-        epsilon = 1e-7, which_mm = :orbital, ϵps = 1e-5, integration_method = :hcubature,
+        omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+        which_mm = :orbital, epsilon = 1e-5, integration_method = :hcubature,
         botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5])
     a = p.a
     c = p.c
@@ -39,7 +39,7 @@ function sigma_abc_TaRh2B2_wrapper(p; dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200
     Gs = dualbasis(Rs)
     computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
     return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation,
-         which_mm, Ω_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+         which_mm, omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
     # old bounds _________________________________________________________________________________________
     # cell = wignerseitz(Gs) 
     # v = cartesianize!(cell).verts #vertices of the BZ
