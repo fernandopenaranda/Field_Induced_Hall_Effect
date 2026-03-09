@@ -13,8 +13,8 @@ function hamiltonian_TaRh2B2(μ, t1::Number,t2,t3,q, a =1 ,c = 1)
 end
 
 """ first derivative ∂dir H """
-d_hamiltonian_TaRh2B2(ts,q, dir, a =1 ,c = 1) = d_hamiltonian_TaRh2B2(ts[1],ts[2],ts[3],q, dir, a, c)
-function d_hamiltonian_TaRh2B2(t1,t2,t3,q, dir, a =1 ,c = 1)
+d_hamiltonian_TaRh2B2(ts::Array,q, dir, a =1 ,c = 1) = d_hamiltonian_TaRh2B2(ts[1],ts[2],ts[3],q, dir, a, c)
+function d_hamiltonian_TaRh2B2(t1::Number,t2,t3,q, dir, a =1 ,c = 1)
     ts = [t1,t2,t3]
     δs = site_distances(a, c)
     phase(i) = 1im*(δs[i]'* q)
@@ -25,9 +25,9 @@ function d_hamiltonian_TaRh2B2(t1,t2,t3,q, dir, a =1 ,c = 1)
 end
 
 """ second derivative ∂dirout ∂dirin H """
-d_d_hamiltonian_TaRh2B2(ts,q, dir_out, dir_in, a =1 ,c = 1) = 
+d_d_hamiltonian_TaRh2B2(ts::Array,q, dir_out, dir_in, a =1 ,c = 1) = 
     d_d_hamiltonian_TaRh2B2(ts[1],ts[2],ts[3],q, dir_out, dir_in, a, c)
-function d_d_hamiltonian_TaRh2B2(t1,t2,t3, q, dir_out, dir_in, a =1 ,c = 1)
+function d_d_hamiltonian_TaRh2B2(t1::Number,t2,t3, q, dir_out, dir_in, a =1 ,c = 1)
     ts = [t1,t2,t3]
     δs = site_distances(a, c)
     phase(i) = 1im*(δs[i]'* q)

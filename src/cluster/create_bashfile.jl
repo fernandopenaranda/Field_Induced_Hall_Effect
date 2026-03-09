@@ -4,8 +4,6 @@ this function determines BZ cubic partitions by
 splitting the BZ parametrized as a cube in u1, u2, u3, 
 with BZ -> k = u1 *b1 + u2*b2 + u3*b3
 """
-using Serialization, Optics_in_the_length_gauge
-
 function split_cube(divisions::Int)
     # Determine number of divisions along each axis
     if divisions <= 0

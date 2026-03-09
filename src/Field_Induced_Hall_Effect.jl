@@ -6,19 +6,18 @@ module Field_Induced_Hall_Effect
     using Arpack
     using LinearAlgebra
     using Cubature
-    using ProgressMeter
-    using Base.Threads
-    using Distributed
-    using Dierckx
     using PhysicalConstants
     using PhysicalConstants.CODATA2018
     using Unitful
     using SparseArrays
     using StaticArrays
     using Parameters
+    using CSV
+    using JLD2
+    using Serialization
     include("model.jl")
     include("wrapper.jl")
-    include("cluster/cluster_evaluate_subcube.jl")
+    # include("cluster/cluster_evaluate_subcube.jl")
     include("cluster/cluster_tools.jl")
     include("cluster/create_bashfile.jl")
 

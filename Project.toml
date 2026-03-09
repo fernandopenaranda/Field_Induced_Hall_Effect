@@ -4,8 +4,21 @@ authors = ["Fernando Penaranda <fernandopenaranda@github.com> and contributors"]
 version = "1.0.0-DEV"
 
 [deps]
+Arpack = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
 BZpaths = "f8cfb5e1-ca40-4b8f-9b88-500575390b6d"
+Bravais = "ada6cbde-b013-4edf-aa94-f6abe8bd6e6b"
+Brillouin = "23470ee3-d0df-4052-8b1a-8cbd6363e7f0"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Cubature = "667455a9-e2ce-5579-9412-b964f529a492"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Optics_in_the_length_gauge = "0ea70cc5-a76f-4e09-b9f9-a74b5f0b413f"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+PhysicalConstants = "5ad8b20f-a522-5ce9-bfc9-ddf1d5bda6ab"
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 julia = "1.6.7"

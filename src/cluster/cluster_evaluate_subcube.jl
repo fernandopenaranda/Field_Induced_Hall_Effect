@@ -3,7 +3,6 @@ using Optics_in_the_length_gauge, CSV, JLD2, Serialization
 job_id = parse(Int, ARGS[1]) # Get the task ID from SLURM
 jobs_num = parse(Int, ARGS[2])
 PID = ARGS[3]
-
 dirj =  Symbol(ARGS[4])
 dirE =  Symbol(ARGS[5])
 dirB =  Symbol(ARGS[6])
