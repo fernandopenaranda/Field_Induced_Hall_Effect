@@ -66,7 +66,7 @@ function create_bashfile(divisions)
         println(io, "#!/bin/bash")
         println(io, "#SBATCH --job-name=eval_subcubes")
         println(io, "#SBATCH --array=1-$total_subcubes")
-        println(io, "#SBATCH --output=job_%A_%a.out")
+        println(io, "#SBATCH --output=slurm-%A_%a.out")
         println(io, "#SBATCH --error=slurm-%A.%a.err")
         println(io, "#SBATCH --cpus-per-task=1")
         println(io, "#SBATCH --mem-per-cpu=8G")
@@ -106,7 +106,7 @@ function create_bashfile(divisions)
     $mumin $mumax $mupoints"
     
     if [ "${SLURM_ARRAY_TASK_ID:-0}" -eq 1 ]; then
-        printf "JOBID=%s CMD=%s\n" "$SLURM_ARRAY_JOB_ID" "$CMD" >> "julia_command_interpolations.txt"
+        printf "JOBID=%s CMD=%s\n" "$SLURM_ARRAY_JOB_ID" "$CMD" >> "julia_commands.txt"
     fi
     
     exec $CMD
