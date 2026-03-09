@@ -1,5 +1,5 @@
 using JLD2
-using FilePathsBase
+using FilePathsBase, Field_Induced_Hall_Effect
 function slurm_conductivities(; dirj = :x, dirE = :y, dirB = :x, T = 5, evals = 1000, omega_switch = true, 
     ps_switch = true, qm_switch = true, fermi_surface = true, epsilon = 1e-5, which_mm = :orbital, integration_method = :montecarlo,
     t1 = 1, t2 = 0.5, t3 = 0.1, mumin = -3, mumax = 3, mupoints = 1, dryrun=false)
@@ -35,29 +35,21 @@ end
 
 
 
-
-function postprocessing(PID)
+postprocessing(PID::Number) = postprocessing(string(PID))
+function postprocessing(PID::String)
     destination =  homedir() * "/Projects/Field_Induced_Hall_Effect/" * PID 
     calcfile = destination * "/merged_calculation.jld"
     presfile = destination * "/merged_presets.jld"
-
-    
     pid_folder =  find_folder(PID)
-
     subfolders = filter(isdir, joinpath.(pid_folder, readdir(pid_folder)))
-
     first_vector = nothing
     summed_vector = nothing
-
     for folder in subfolders
         file = joinpath(folder, "calculation.jld")
-
         if isfile(file)
             data = load(file)
-
-            v1 = data["vector1"]
-            v2 = data["vector2"]
-
+            v1 = data["muvec"]
+            v2 = data["sijks"]
             if first_vector === nothing
                 first_vector = v1
                 summed_vector = copy(v2)
@@ -68,8 +60,8 @@ function postprocessing(PID)
     end
 
     save(calcfile,
-        "vector1" => first_vector,
-        "vector2_sum" => summed_vector
+        "muvec" => first_vector,
+        "sijks" => summed_vector
     )
 
     cp(pid_folder * "/1/presets.jld", presfile)
