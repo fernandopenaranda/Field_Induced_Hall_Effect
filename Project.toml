@@ -3,6 +3,10 @@ uuid = "f57a1fe4-d949-4368-b10e-a4b5a13ce036"
 authors = ["Fernando Penaranda <fernandopenaranda@github.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+BZpaths = "f8cfb5e1-ca40-4b8f-9b88-500575390b6d"
+Optics_in_the_length_gauge = "0ea70cc5-a76f-4e09-b9f9-a74b5f0b413f"
+
 [compat]
 julia = "1.6.7"
 
