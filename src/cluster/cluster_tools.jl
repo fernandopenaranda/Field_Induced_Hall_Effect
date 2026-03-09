@@ -47,23 +47,17 @@ function postprocessing(PID::String)
     for folder in subfolders
         file = joinpath(folder, "calculation.jld")
         if isfile(file)
-            data = load(file)
-            v1 = data["muvec"]
-            v2 = data["sijks"]
+            @load file muvec sijks
             if first_vector === nothing
-                first_vector = v1
-                summed_vector = copy(v2)
+                first_vector = muvec
+                summed_vector = sijks
             else
-                summed_vector .+= v2
+                summed_vector .+= sijks
             end
         end
     end
 
-    save(calcfile,
-        "muvec" => first_vector,
-        "sijks" => summed_vector
-    )
-
+    @save calcfile first_vector summed_vector
     cp(pid_folder * "/1/presets.jld", presfile)
 
     println("Saved summed result to $destination")

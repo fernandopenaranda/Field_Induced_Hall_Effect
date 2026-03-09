@@ -22,6 +22,6 @@ module Field_Induced_Hall_Effect
     include("cluster/create_bashfile.jl")
 
     export sigma_abc_TaRh2B2_wrapper, hamiltonian_TaRh2B2, d_hamiltonian_TaRh2B2, d_d_hamiltonian_TaRh2B2
-    export create_bashfile, slurm_conductivities, modelpresets, TaRh2B2Params, postprocessing
+    export create_bashfile, slurm_conductivities, modelpresets, TaRh2B2Params, postprocessing, find_folder
 
 end
