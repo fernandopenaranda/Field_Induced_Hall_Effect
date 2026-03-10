@@ -51,8 +51,8 @@ function create_bashfile(divisions)
     # #SBATCH --array=1-$total_subcubes
     # #SBATCH --output=job_%A_%a.out
     # #SBATCH --cpus-per-task=1
-    # #SBATCH --mem-per-cpu=8G
-    # #SBATCH --time=23:00:00 
+    # #SBATCH --mem-per-cpu=2G
+    # #SBATCH --time=02:00:00 
     # #SBATCH --error=slurm-%A.%a.err 
     # # Run the Julia script for this subcube
     # CMD="/scratch/ferpe/julia-1.9.4/bin/julia --compiled-modules=no $julia_script \$SLURM_ARRAY_TASK_ID \$SLURM_ARRAY_TASK_MAX \$SLURM_ARRAY_JOB_ID"
