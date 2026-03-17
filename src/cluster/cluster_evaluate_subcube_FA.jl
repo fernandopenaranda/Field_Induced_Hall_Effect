@@ -60,7 +60,7 @@ for mu in muvec
     sijk_pres = sigma_abc_ferroaxial_wrapper_3d(modelpresets_FA(; μ = mu, t = t ,tp = tp, Δ = Delta); keyws...) #computing struct for each mu
     push!(sijks,quantum_contribution(sijk_pres)) # compute
 end
-sijk_pres = sigma_abc_TaRh2B2_wrapper(FerroAxialHam(p, t = t ,tp =tp, Δ=Delta); keyws...) 
+sijk_pres = sigma_abc_ferroaxial_wrapper_3d(FerroAxialHam(p, t = t ,tp =tp, Δ=Delta); keyws...) 
 
 #_________________________________________________________________________________________
 #store
