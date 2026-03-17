@@ -66,3 +66,60 @@ function qc_sweep(μlist, p, cp_pres)
     return μlist ,s
 end
 
+
+#=
+Ferroaxial graphite _________________________________________________________________________________________
+=#
+modelpresets_FA(; μ =0, t =1 ,tp =0.5, Δ = 1) = FerroAxialHam(μ, t,tp,Δ)
+@with_kw struct FerroAxialHam
+    μ::Float64
+    t::Float64
+    tp::Float64
+    Δ::Float64
+end
+"""
+structure wrapper botbounds and topbounds in [-0.5,0.5]
+"""
+function sigma_abc_ferroaxial_wrapper_2d(p; 
+        dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
+        Ω_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+        epsilon = 1e-7, which_mm = :orbital, 
+        integration_method = :montercarlo, 
+        botbounds = [-0.5,-0.5], topbounds = [0.5,0.5])
+    h(q) = ferroaxial_ham2d(q,p.μ,p.Δ,p.t, p.tp)
+    dhx(q) = d_ferroaxial_ham2d(p.t,p.tp,p.Δ,q,:x)
+    dhy(q) = d_ferroaxial_ham2d(p.t,p.tp,p.Δ,q,:y)
+    dh(q) = [dhx(q), dhy(q)]
+    didjh(q,i,j) = d2_ferroaxial_ham2d(p.t,p.tp,q,i,j)
+    ddh(q) = [[didjh(q,:x,:x), didjh(q,:x,:y)],
+            [didjh(q,:y,:x), didjh(q,:y,:y)]]
+    a = 1
+    Rs = (a .* [1.0, 0], a .* [-1/2, √3/2])
+    Gs = dualbasis(Rs)
+    computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
+    return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
+        Ω_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+end
+
+function sigma_abc_ferroaxial_wrapper_3d(p; 
+    dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
+    Ω_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+    epsilon = 1e-7, which_mm = :orbital, 
+    integration_method = :montercarlo, 
+    botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5])
+    h(q) = ferroaxial_ham3d(q,p.μ,p.Δ,p.t, p.tp)
+    dhx(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,q,:x)
+    dhy(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,q,:y)
+    dhz(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,q,:z)
+    dh(q) = [dhx(q), dhy(q), dhz(q)]
+    didjh(q,i,j) = d2_ferroaxial_ham3d(p.t,p.tp,q,i,j)
+    ddh(q) = [[didjh(q,:x,:x), didjh(q,:x,:y), didjh(q,:x,:z)], 
+            [didjh(q,:y,:x), didjh(q,:y,:y), didjh(q,:y,:z)],
+            [didjh(q,:z,:x), didjh(q,:z,:y), didjh(q,:z,:z)]]
+    a = 1.0
+    Rs = (a .* [1.0, 0, 0], a .* [-1/2, √3/2, 0], a .* [0,0,1])
+    Gs = dualbasis(Rs)
+    computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
+    return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
+        Ω_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+end

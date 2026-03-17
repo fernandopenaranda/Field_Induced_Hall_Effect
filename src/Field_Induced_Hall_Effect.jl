@@ -15,13 +15,15 @@ module Field_Induced_Hall_Effect
     using CSV
     using JLD2
     using Serialization
-    include("model.jl")
-    include("wrapper.jl")
+    include("model_TaRh2B2.jl")
+    include("model_ferroaxial_graphite.jl")
+    include("wrappers.jl")
     # include("cluster/cluster_evaluate_subcube.jl")
     include("cluster/cluster_tools.jl")
     include("cluster/create_bashfile.jl")
 
-    export sigma_abc_TaRh2B2_wrapper, hamiltonian_TaRh2B2, d_hamiltonian_TaRh2B2, d_d_hamiltonian_TaRh2B2
-    export create_bashfile, slurm_conductivities, modelpresets, TaRh2B2Params, processing, find_folder
+    export sigma_abc_TaRh2B2_wrapper, hamiltonian_TaRh2B2, d_hamiltonian_TaRh2B2, d_d_hamiltonian_TaRh2B2, sigma_abc_ferroaxial_wrapper_3d, sigma_abc_ferroaxial_wrapper_2d
+    export ferroaxial_ham2d, d_ferroaxial_ham2d, ferroaxial_ham3d, d_ferroaxial_ham3d, d2_ferroaxial_ham2d, d2_ferroaxial_ham3d
+    export create_bashfile, create_bashfile_FA, slurm_conductivities, slurm_conductivities_FA, modelpresets, modelpresets_FA, FerroAxialHam, TaRh2B2Params, processing, find_folder
 
 end
