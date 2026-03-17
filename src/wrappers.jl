@@ -82,7 +82,7 @@ structure wrapper botbounds and topbounds in [-0.5,0.5]
 """
 function sigma_abc_ferroaxial_wrapper_2d(p; 
         dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-        Ω_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+        omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
         epsilon = 1e-7, which_mm = :orbital, 
         integration_method = :montercarlo, 
         botbounds = [-0.5,-0.5], topbounds = [0.5,0.5])
@@ -98,12 +98,12 @@ function sigma_abc_ferroaxial_wrapper_2d(p;
     Gs = dualbasis(Rs)
     computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
     return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
-        Ω_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+        omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
 end
 
 function sigma_abc_ferroaxial_wrapper_3d(p; 
     dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-    Ω_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+    omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
     epsilon = 1e-7, which_mm = :orbital, 
     integration_method = :montercarlo, 
     botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5])
@@ -121,5 +121,5 @@ function sigma_abc_ferroaxial_wrapper_3d(p;
     Gs = dualbasis(Rs)
     computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
     return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
-        Ω_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+        omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
 end
