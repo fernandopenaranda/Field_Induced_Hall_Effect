@@ -29,7 +29,8 @@ function ferroaxial_ham3d(k, μ = 0, Δ = 1, t = 1, tp = 0.5)
     fk = f(k, ds)
     gk = g(k, ds)
     fzk = fz(k, a3)
-    return [Δ-μ  t*(fzk+fk)+tp*(gk); conj(t*(fzk+fk)+tp*gk) -Δ-μ]
+    fzkm = fz(k,-a3)
+    return [Δ-μ  t*(fzk+fzkm+fk)+tp*(gk); conj(t*(fzk+fzkm+fk)+tp*gk) -Δ-μ]
 end
 
 fz(k, a3) = cis(dot(k, a3))
@@ -61,8 +62,9 @@ function d_ferroaxial_ham3d(t,tp,Δ,q, dir)
     ds = [δ1, δ2, δ3]
     dfk = df(q, ds, dir)
     dfzk = dfz(q, a3, dir)
+    dfzkm = dfz(q, -a3, dir)
     dgk = dg(q, ds, dir)
-    return [0 t*(dfk+dfzk) + tp*dgk; conj(t*(dfk+dfzk) + tp*dgk) 0]
+    return [0 t*(dfk+dfzk+dfzkm) + tp*dgk; conj(t*(dfk+dfzk+dfzkm) + tp*dgk) 0]
 end
 
 dfz(k, a3 , dir) = ifelse(dir != :z, 0, im*a3[3]*cis(dot(k, a3)))
@@ -74,6 +76,16 @@ dg(k,d1,d2,d3,a) = im*(2d1-d2)[symb_to_ind(a)]*cis(dot(k,2d1-d2)) +
                     im*(2d1-d3)[symb_to_ind(a)]*cis(dot(k,2d1-d3)) -
                     im*(2d2-d1)[symb_to_ind(a)]*cis(dot(k,2d2-d1)) -
                     im*(2d3-d2)[symb_to_ind(a)]*cis(dot(k,2d3-d2))
+
+function symb_to_ind(dir)
+    if dir == :x
+        1
+    elseif dir == :y
+        2
+    elseif dir == :z 
+        3
+    end
+end
 
 #second derivative
 function d2_ferroaxial_ham2d(t, tp, q, dir1, dir2)
@@ -97,8 +109,9 @@ function d2_ferroaxial_ham3d(t, tp, q, dir1, dir2)
     ds = [δ1, δ2, δ3]
     d2fk = d2f(q, ds, dir1, dir2)
     d2fzk = d2fz(q, a3, dir1, dir2)
+    d2fzkm = d2fz(q,-a3, dir1, dir2)
     d2gk = d2g(q, ds, dir1, dir2)
-    off = t*(d2fk+d2fzk) + tp*d2gk
+    off = t*(d2fk+d2fzk+d2fzkm) + tp*d2gk
     [0 off; conj(off) 0]
 end
 
@@ -136,5 +149,3 @@ function d2g(k, d1, d2, d3, dir1, dir2)
 end
 
 d2g(k, ds, dir1, dir2) = d2g(k, ds[1], ds[2], ds[3], dir1, dir2)
-
-
