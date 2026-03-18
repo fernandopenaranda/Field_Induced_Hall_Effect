@@ -30,13 +30,13 @@ function ferroaxial_ham3d(k, μ = 0, Δ = 1, t = 1, tp = 0.5)
     gk = g(k, ds)
     fzk = fz(k, a3)
     fzkm = fz(k,-a3)
-    return [Δ-μ  t*(fzk+fzkm+fk)+tp*(gk); conj(t*(fzk+fzkm+fk)+tp*gk) -Δ-μ]
+    return [Δ-μ + t*(fzk+fzkm)   t*(fk)+tp*(gk); conj(t*(fk)+tp*gk) -Δ-μ+ t*(fzk+fzkm)]
 end
 
 fz(k, a3) = cis(dot(k, a3))
 f(k, deltas) = sum(exp(im * dot(k, δ)) for δ in deltas)
 g(k, ds) = g(k, ds[1], ds[2], ds[3])
-g(k,d1,d2,d3) = cis(dot(k,2d1-d2)) + cis(dot(k,2d2-d3)) + cis(dot(k,2d3-d1)) - cis(dot(k,2d1-d3)) - cis(dot(k,2d2-d1)) -cis(dot(k,2d3-d2 ))
+g(k,d1,d2,d3) = cis(dot(k,2d1-d2)) + cis(dot(k,2d2-d3)) + cis(dot(k,2d3-d1))  - cis(dot(k,2d1-d3)) - cis(dot(k,2d2-d1)) -cis(dot(k,2d3-d2 ))
 
 function d_ferroaxial_ham2d(t,tp,Δ,q, dir)
     a = 1.0
@@ -64,7 +64,7 @@ function d_ferroaxial_ham3d(t,tp,Δ,q, dir)
     dfzk = dfz(q, a3, dir)
     dfzkm = dfz(q, -a3, dir)
     dgk = dg(q, ds, dir)
-    return [0 t*(dfk+dfzk+dfzkm) + tp*dgk; conj(t*(dfk+dfzk+dfzkm) + tp*dgk) 0]
+    return [t*(dfzk+dfzkm) t*dfk+tp*dgk; conj(t*dfk+tp*dgk) t*(dfzk+dfzkm)]
 end
 
 dfz(k, a3 , dir) = ifelse(dir != :z, 0, im*a3[3]*cis(dot(k, a3)))
@@ -102,8 +102,9 @@ function d2_ferroaxial_ham3d(t, tp, q, dir1, dir2)
     d2fzk = d2fz(q, a3, dir1, dir2)
     d2fzkm = d2fz(q,-a3, dir1, dir2)
     d2gk = d2g(q, ds, dir1, dir2)
-    off = t*(d2fk+d2fzk+d2fzkm) + tp*d2gk
-    [0 off; conj(off) 0]
+    off = t*(d2fk) + tp*d2gk
+    dig = t * (d2fzk+d2fzkm)
+    [dig off; conj(off) dig]
 end
 
 function d2fz(k, a3, dir1, dir2)
