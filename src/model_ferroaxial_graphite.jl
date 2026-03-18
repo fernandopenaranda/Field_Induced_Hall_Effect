@@ -77,15 +77,6 @@ dg(k,d1,d2,d3,a) = im*(2d1-d2)[symb_to_ind(a)]*cis(dot(k,2d1-d2)) +
                     im*(2d2-d1)[symb_to_ind(a)]*cis(dot(k,2d2-d1)) -
                     im*(2d3-d2)[symb_to_ind(a)]*cis(dot(k,2d3-d2))
 
-function symb_to_ind(dir)
-    if dir == :x
-        1
-    elseif dir == :y
-        2
-    elseif dir == :z 
-        3
-    end
-end
 
 #second derivative
 function d2_ferroaxial_ham2d(t, tp, q, dir1, dir2)
