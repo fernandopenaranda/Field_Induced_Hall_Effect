@@ -2,13 +2,26 @@
 #a = 1, L in Å, E in eV# Δ = sublattice mass 
 # Model of graphene with three neighbours with opposite signs and sublatice masses
 # breaking Mx and My and enabling a ferroaxial response
+
+function lattice_vectors(a)
+    # a1 = a * [3/2,  sqrt(3)/2, 0]
+    # a2 = a * [3/2, -sqrt(3)/2, 0]
+    # a3 = a * [0, 0, 1]
+    # δ1 = a * [0.0, 1/sqrt(3), 0]
+    # δ2 = a * [-1/2, -1/(2sqrt(3)), 0]
+    # δ3 = a * [ 1/2, -1/(2sqrt(3)), 0]
+    a1 = a * [√3, 0, 0] # Γ - M line along the x axis 
+    a2 = a * [√3/2, -3/2, 0]
+    a3 = a * [0, 0, 1]
+    δ1 = a * [1/2, 1/(2√3), 0]
+    δ2 = a * [-1, 0, 0]
+    δ3 = a * [1/2, -1/(2√3), 0]
+    return a1, a2, a3, δ1, δ2, δ3
+end
+
 function ferroaxial_ham2d(k, μ = 0, Δ = 1, t = 1, tp = 0.5)
     a = 1.0
-    a1 = a * [3/2,  sqrt(3)/2]
-    a2 = a * [3/2, -sqrt(3)/2]
-    δ1 = a * [0.0, 1/sqrt(3)]
-    δ2 = a * [-1/2, -1/(2sqrt(3))]
-    δ3 = a * [ 1/2, -1/(2sqrt(3))]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [δ1, δ2, δ3]
     fk = f(k, ds)
     gk = g(k, ds)
@@ -19,12 +32,7 @@ end
 """ unbounded in the z direction"""
 function ferroaxial_ham3d(k, μ = 0, Δ = 1, t = 1, tp = 0.5)
     a = 1.0
-    a1 = a * [3/2,  sqrt(3)/2, 0]
-    a2 = a * [3/2, -sqrt(3)/2, 0]
-    a3 = a * [0, 0, 1]
-    δ1 = a * [0.0, 1/sqrt(3), 0]
-    δ2 = a * [-1/2, -1/(2sqrt(3)), 0]
-    δ3 = a * [ 1/2, -1/(2sqrt(3)), 0]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [δ1, δ2, δ3]
     fk = f(k, ds)
     gk = g(k, ds)
@@ -40,11 +48,7 @@ g(k,d1,d2,d3) = cis(dot(k,2d1-d2)) + cis(dot(k,2d2-d3)) + cis(dot(k,2d3-d1))  - 
 
 function d_ferroaxial_ham2d(t,tp,Δ,q, dir)
     a = 1.0
-    a1 = a * [3/2,  sqrt(3)/2]
-    a2 = a * [3/2, -sqrt(3)/2]
-    δ1 = a * [0.0, 1/sqrt(3)]
-    δ2 = a * [-1/2, -1/(2sqrt(3))]
-    δ3 = a * [ 1/2, -1/(2sqrt(3))]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [δ1, δ2, δ3]
     dfk = df(q, ds, dir)
     dgk = dg(q, ds, dir)
@@ -53,12 +57,7 @@ end
 
 function d_ferroaxial_ham3d(t,tp,Δ,q, dir)
     a = 1.0
-    a1 = a * [3/2,  sqrt(3)/2, 0]
-    a2 = a * [3/2, -sqrt(3)/2, 0]
-    a3 = a * [0, 0, 1]
-    δ1 = a * [0.0, 1/sqrt(3), 0]
-    δ2 = a * [-1/2, -1/(2sqrt(3)), 0]
-    δ3 = a * [ 1/2, -1/(2sqrt(3)), 0]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [δ1, δ2, δ3]
     dfk = df(q, ds, dir)
     dfzk = dfz(q, a3, dir)
@@ -81,9 +80,7 @@ dg(k,d1,d2,d3,a) = im*(2d1-d2)[symb_to_ind(a)]*cis(dot(k,2d1-d2)) +
 #second derivative
 function d2_ferroaxial_ham2d(t, tp, q, dir1, dir2)
     a = 1.0
-    δ1 = a * [0.0, 1/sqrt(3)]
-    δ2 = a * [-1/2, -1/(2sqrt(3))]
-    δ3 = a * [ 1/2, -1/(2sqrt(3))]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [δ1, δ2, δ3]
     d2fk = d2f(q, ds, dir1, dir2)
     d2gk = d2g(q, ds, dir1, dir2)
@@ -93,10 +90,7 @@ end
 
 function d2_ferroaxial_ham3d(t, tp, q, dir1, dir2)
     a = 1.0
-    δ1 = a * [0.0, 1/sqrt(3),0.0]
-    δ2 = a * [-1/2, -1/(2sqrt(3)),0.0]
-    δ3 = a * [ 1/2, -1/(2sqrt(3)),0.0]
-    a3 = a * [0, 0, 1]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [δ1, δ2, δ3]
     d2fk = d2f(q, ds, dir1, dir2)
     d2fzk = d2fz(q, a3, dir1, dir2)
