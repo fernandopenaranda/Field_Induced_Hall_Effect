@@ -18,9 +18,10 @@ integration_method = Symbol(ARGS[15])
 t = parse(Float64, ARGS[16])
 tp = parse(Float64, ARGS[17])
 Delta = parse(Float64, ARGS[18])
-mumin = parse(Float64, ARGS[19])
-mumax = parse(Float64, ARGS[20])
-mupoints= parse(Int, ARGS[21])
+tc = parse(Float64, ARGS[19])
+mumin = parse(Float64, ARGS[20])
+mumax = parse(Float64, ARGS[21])
+mupoints= parse(Int, ARGS[22])
 
 print("Starting...")
 if mupoints == 0 || mupoints == 1
@@ -37,7 +38,7 @@ my_subcube = subcubes[job_id]
 botbounds = [my_subcube[1][1], my_subcube[2][1], my_subcube[3][1]]
 topbounds = [my_subcube[1][2], my_subcube[2][2], my_subcube[3][2]]
 
-p = modelpresets_FA(;t =t , tp = tp, Δ=Delta)
+p = modelpresets_FA(;t =t , tp = tp, Δ=Delta, tc = tc)
 keyws = (
     dirj = dirj,
     dirE = dirE,

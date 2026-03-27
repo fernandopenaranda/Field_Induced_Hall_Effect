@@ -177,9 +177,10 @@ function create_bashfile_FA(divisions)
     t=${13}
     tp=${14}
     Delta=${15}
-    mumin=${16}
-    mumax=${17}
-    mupoints=${18}
+    tc=${16}
+    mumin=${17}
+    mumax=${18}
+    mupoints=${19}
     
     echo "My SLURM_ARRAY_JOB_ID is $SLURM_ARRAY_JOB_ID."
     echo "My SLURM_ARRAY_TASK_ID is $SLURM_ARRAY_TASK_ID"
@@ -190,7 +191,7 @@ function create_bashfile_FA(divisions)
     $dirj $dirE $dirB $T $evals \
     $omega_switch $ps_switch $qm_switch $fermi_surface \
     $epsilon $which_mm $integration_method \
-    $t $tp $Delta \
+    $t $tp $Delta $tc\
     $mumin $mumax $mupoints"
     
     if [ "${SLURM_ARRAY_TASK_ID:-0}" -eq 1 ]; then
