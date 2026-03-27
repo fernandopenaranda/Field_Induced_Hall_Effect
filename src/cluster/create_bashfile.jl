@@ -177,10 +177,11 @@ function create_bashfile_FA(divisions)
     t=${13}
     tp=${14}
     Delta=${15}
-    tc=${16}
-    mumin=${17}
-    mumax=${18}
-    mupoints=${19}
+    tpz=${16}
+    tc=${17}
+    mumin=${18}
+    mumax=${19}
+    mupoints=${20}
     
     echo "My SLURM_ARRAY_JOB_ID is $SLURM_ARRAY_JOB_ID."
     echo "My SLURM_ARRAY_TASK_ID is $SLURM_ARRAY_TASK_ID"
