@@ -59,10 +59,10 @@ keyws = (
 
 sijks = Float64[]
 for mu in muvec  
-    sijk_pres = sigma_abc_ferroaxial_wrapper_3d(modelpresets_FA(; μ = mu, t = t ,tp = tp, Δ = Delta); keyws...) #computing struct for each mu
+    sijk_pres = sigma_abc_ferroaxial_wrapper_3d(modelpresets_FA(; μ = mu, t = t ,tp = tp, Δ = Delta, tpz=tpz, tc =tc); keyws...) #computing struct for each mu
     push!(sijks,quantum_contribution(sijk_pres)) # compute
 end
-sijk_pres = sigma_abc_ferroaxial_wrapper_3d(FerroAxialHam(p, t = t ,tp =tp, Δ=Delta); keyws...) 
+sijk_pres = sigma_abc_ferroaxial_wrapper_3d(FerroAxialHam(p, t = t ,tp =tp, Δ=Delta, tpz=tpz, tc =tc); keyws...) 
 
 #_________________________________________________________________________________________
 #store

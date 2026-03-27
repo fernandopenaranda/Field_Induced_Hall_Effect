@@ -192,7 +192,7 @@ function create_bashfile_FA(divisions)
     $dirj $dirE $dirB $T $evals \
     $omega_switch $ps_switch $qm_switch $fermi_surface \
     $epsilon $which_mm $integration_method \
-    $t $tp $Delta $tc\
+    $t $tp $Delta $tpz $tc\
     $mumin $mumax $mupoints"
     
     if [ "${SLURM_ARRAY_TASK_ID:-0}" -eq 1 ]; then
