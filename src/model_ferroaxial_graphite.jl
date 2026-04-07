@@ -18,14 +18,13 @@ function ferroaxial_ham3d(k, μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0.5, tc = 0
     fk = f(k, ds) # firs neighbour hoppings
     gk = g(k, ds) # third neightbour hoppings (opposite signs see matricial form)
     mk = m(k, ds, a3) # z- AB hoppings
-    # d0 = real(fk) # assymmetry in the slopes of the two bands
     nnk = real(nn(k, ds)) # second neighbour hoppings 
     return [Δ-μ+tc*nnk  t*fk+tp*gk+tp_z*mk; conj(t*fk+tp*gk+tp_z*mk) -Δ-μ + tc*nnk ]
-    # return [Δ-μ+tc*d0  t*fk+tp*gk+tp_z*mk; conj(t*fk+tp*gk+tp_z*mk) -Δ-μ + tc*d0 ]
 end
 
-nn(k, deltas) = sum([2 * cos(dot(k, δ)) for δ in deltas])
-# cis(dot(k,d1-d2)) + cis(dot(k,d2-d3)) + cis(dot(k,d3-d1)) + cis(dot(k,-d1+d2)) + cis(dot(k,-d2+d3)) + cis(dot(k,-d3+d1))
+# nn(k, deltas) = sum([2 * cos(dot(k, δ)) for δ in deltas])
+nn(k, deltas)= nn(k, deltas[1], deltas[2], deltas[3])
+nn(k, d1, d2, d3) = cis(dot(k,d1-d2)) + cis(dot(k,d2-d3)) + cis(dot(k,d3-d1)) + cis(dot(k,-d1+d2)) + cis(dot(k,-d2+d3)) + cis(dot(k,-d3+d1))
 fz(k, a3) = cis(dot(k, a3))
 f(k, deltas) = sum(exp(im * dot(k, δ)) for δ in deltas)
 m(k, ds, a3) = sum(exp(im * dot(k, δ+a3)) for δ in ds) + sum(exp(im * dot(k, δ-a3)) for δ in ds) # same signs for AB and BA
