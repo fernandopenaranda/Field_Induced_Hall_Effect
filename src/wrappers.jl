@@ -110,7 +110,7 @@ function sigma_abc_ferroaxial_wrapper_3d(p;
     integration_method = :montercarlo, 
     botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5], a = 1.0)
 
-    h(q) = ferroaxial_ham3d(q,p.μ,p.Δ,p.t, p.tp, p.tpz)
+    h(q) = ferroaxial_ham3d(q,p.μ,p.Δ,p.t, p.tp, p.tpz, p.tc)
     dhx(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,p.tpz,p.tc,q,:x)
     dhy(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,p.tpz,p.tc,q,:y)
     dhz(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,p.tpz,p.tc,q,:z)
@@ -119,7 +119,7 @@ function sigma_abc_ferroaxial_wrapper_3d(p;
     ddh(q) = [[didjh(q,:x,:x), didjh(q,:x,:y), didjh(q,:x,:z)], 
             [didjh(q,:y,:x), didjh(q,:y,:y), didjh(q,:y,:z)],
             [didjh(q,:z,:x), didjh(q,:z,:y), didjh(q,:z,:z)]]
-     a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     Rs = [a1,a2,a3]
     Gs = dualbasis(Rs)
     computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
