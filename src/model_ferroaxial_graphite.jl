@@ -18,13 +18,15 @@ function ferroaxial_ham3d(k, μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0.5, tc = 0
     fk = f(k, ds) # firs neighbour hoppings
     gk = g(k, ds) # third neightbour hoppings (opposite signs see matricial form)
     mk = m(k, ds, a3) # z- AB hoppings
-    nnk = real(nn(k, ds)) # second neighbour hoppings 
+    nnk = nn(k, ds) # second neighbour hoppings 
+    # println(gk)
+    # throw(ArgumentError(""))
     return [Δ-μ+tc*nnk  t*fk+tp*gk+tp_z*mk; conj(t*fk+tp*gk+tp_z*mk) -Δ-μ + tc*nnk ]
 end
-
-# nn(k, deltas) = sum([2 * cos(dot(k, δ)) for δ in deltas])
 nn(k, deltas)= nn(k, deltas[1], deltas[2], deltas[3])
-nn(k, d1, d2, d3) = cis(dot(k,d1-d2)) + cis(dot(k,d2-d3)) + cis(dot(k,d3-d1)) + cis(dot(k,-d1+d2)) + cis(dot(k,-d2+d3)) + cis(dot(k,-d3+d1))
+nn(k, d1,d2,d3) = sum([2 * cos(dot(k, δ)) for δ in [d1-d2,d2-d3,d3-d1]])
+
+# nn(k, d1, d2, d3) = cis(dot(k,d1-d2)) + cis(dot(k,d2-d3)) + cis(dot(k,d3-d1)) + cis(dot(k,-d1+d2)) + cis(dot(k,-d2+d3)) + cis(dot(k,-d3+d1))
 fz(k, a3) = cis(dot(k, a3))
 f(k, deltas) = sum(exp(im * dot(k, δ)) for δ in deltas)
 m(k, ds, a3) = sum(exp(im * dot(k, δ+a3)) for δ in ds) + sum(exp(im * dot(k, δ-a3)) for δ in ds) # same signs for AB and BA
@@ -54,12 +56,24 @@ dg(k,d1,d2,d3,a) = im*(2d1-d2)[symb_to_ind(a)]*cis(dot(k,2d1-d2)) +
                     im*(2d2-d1)[symb_to_ind(a)]*cis(dot(k,2d2-d1)) -
                     im*(2d3-d2)[symb_to_ind(a)]*cis(dot(k,2d3-d2))
 
-dnn(k,deltas,a) =  sum([-2*δ[symb_to_ind(a)]* sin(dot(k, δ)) for δ in deltas])
 
-function d2nn(k, deltas, dir1, dir2)
+dnn(k,deltas,a) = dnn(k,deltas[1], deltas[2], deltas[3],a)
+dnn(k, d1, d2, d3, a) = sum([-2*δ[symb_to_ind(a)]* sin(dot(k, δ)) for δ in [d1-d2,d2-d3,d3-d1]])
+
+
+# dnn(k, d1, d2, d3, a) = 1im * ( (d1-d2)[symb_to_ind(a)] * cis(dot(k,d1-d2)) + 
+#                                 (d2-d3)[symb_to_ind(a)] * cis(dot(k,d2-d3)) + 
+#                                 (d3-d1)[symb_to_ind(a)] * cis(dot(k,d3-d1)) + 
+#                                 (-d1+d2)[symb_to_ind(a)]* cis(dot(k,-d1+d2)) + 
+#                                 (-d2+d3)[symb_to_ind(a)]* cis(dot(k,-d2+d3)) + 
+#                                 (-d3+d1)[symb_to_ind(a)]* cis(dot(k,-d3+d1)))
+
+d2nn(k,deltas,dir1,dir2) = d2nn(k,deltas[1],deltas[2],deltas[3],dir1,dir2)
+
+function d2nn(k, d1,d2,d3, dir1, dir2)
     i = symb_to_ind(dir1)
     j = symb_to_ind(dir2)
-    sum([-2*δ[i]*δ[j]* cos(dot(k, δ)) for δ in deltas])
+    sum([-2*δ[i]*δ[j]* cos(dot(k, δ)) for δ in [d1-d2,d2-d3,d3-d1]])
 end
 
 
