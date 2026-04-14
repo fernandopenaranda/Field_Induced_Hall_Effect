@@ -25,6 +25,8 @@ function threeband_ferroaxial_ham3d(k, μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0
     # throw(ArgumentError(""))
     return [Δ-μ+tc*nnk  t*fk+tp*gk+tp_z*mk conj(cak*t_ca); conj(t*fk+tp*gk+tp_z*mk) -Δ-μ + tc*nnk conj(cbk*t_cb); cak*t_ca cbk*t_cb -μ+U]
 end
+
+
 nn(k, deltas)= nn(k, deltas[1], deltas[2], deltas[3])
 nn(k, d1,d2,d3) = sum([2 * cos(dot(k, δ)) for δ in [d1-d2,d2-d3,d3-d1]])
 
