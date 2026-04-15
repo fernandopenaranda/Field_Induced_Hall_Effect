@@ -60,14 +60,6 @@ dg(k,d1,d2,d3,a) = im*(2d1-d2)[symb_to_ind(a)]*cis(dot(k,2d1-d2)) +
 dnn(k,deltas,a) = dnn(k,deltas[1], deltas[2], deltas[3],a)
 dnn(k, d1, d2, d3, a) = sum([-2*δ[symb_to_ind(a)]* sin(dot(k, δ)) for δ in [d1-d2,d2-d3,d3-d1]])
 
-
-# dnn(k, d1, d2, d3, a) = 1im * ( (d1-d2)[symb_to_ind(a)] * cis(dot(k,d1-d2)) + 
-#                                 (d2-d3)[symb_to_ind(a)] * cis(dot(k,d2-d3)) + 
-#                                 (d3-d1)[symb_to_ind(a)] * cis(dot(k,d3-d1)) + 
-#                                 (-d1+d2)[symb_to_ind(a)]* cis(dot(k,-d1+d2)) + 
-#                                 (-d2+d3)[symb_to_ind(a)]* cis(dot(k,-d2+d3)) + 
-#                                 (-d3+d1)[symb_to_ind(a)]* cis(dot(k,-d3+d1)))
-
 d2nn(k,deltas,dir1,dir2) = d2nn(k,deltas[1],deltas[2],deltas[3],dir1,dir2)
 
 function d2nn(k, d1,d2,d3, dir1, dir2)

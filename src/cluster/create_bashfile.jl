@@ -81,17 +81,18 @@ function create_bashfile(divisions)
     evals=$5
     omega_switch=$6
     ps_switch=$7
-    qm_switch=$8
-    fermi_surface=$9
-    epsilon=${10}
-    which_mm=${11}
-    integration_method=${12}
-    t1=${13}
-    t2=${14}
-    t3=${15}
-    mumin=${16}
-    mumax=${17}
-    mupoints=${18}
+    ps_orbital_switch=$8
+    qm_switch=$9
+    fermi_surface=${10}
+    epsilon=${11}
+    which_mm=${12}
+    integration_method=${13}
+    t1=${14}
+    t2=${15}
+    t3=${16}
+    mumin=${17}
+    mumax=${18}
+    mupoints=${19}
     
     echo "My SLURM_ARRAY_JOB_ID is $SLURM_ARRAY_JOB_ID."
     echo "My SLURM_ARRAY_TASK_ID is $SLURM_ARRAY_TASK_ID"
@@ -100,7 +101,7 @@ function create_bashfile(divisions)
     CMD="/scratch/ferpe/julia-1.9.4/bin/julia --compiled-modules=no $JULIA_SCRIPT \
     $SLURM_ARRAY_TASK_ID $SLURM_ARRAY_TASK_MAX $SLURM_ARRAY_JOB_ID \
     $dirj $dirE $dirB $T $evals \
-    $omega_switch $ps_switch $qm_switch $fermi_surface \
+    $omega_switch $ps_switch $ps_orbital_switch $qm_switch $fermi_surface \
     $epsilon $which_mm $integration_method \
     $t1 $t2 $t3 \
     $mumin $mumax $mupoints"
@@ -169,19 +170,20 @@ function create_bashfile_FA(divisions)
     evals=$5
     omega_switch=$6
     ps_switch=$7
-    qm_switch=$8
-    fermi_surface=$9
-    epsilon=${10}
-    which_mm=${11}
-    integration_method=${12}
-    t=${13}
-    tp=${14}
-    Delta=${15}
-    tpz=${16}
-    tc=${17}
-    mumin=${18}
-    mumax=${19}
-    mupoints=${20}
+    ps_orbital_switch=$8
+    qm_switch=$9
+    fermi_surface=${10}
+    epsilon=${11}
+    which_mm=${12}
+    integration_method=${13}
+    t=${14}
+    tp=${15}
+    Delta=${16}
+    tpz=${17}
+    tc=${18}
+    mumin=${19}
+    mumax=${20}
+    mupoints=${21}
     
     echo "My SLURM_ARRAY_JOB_ID is $SLURM_ARRAY_JOB_ID."
     echo "My SLURM_ARRAY_TASK_ID is $SLURM_ARRAY_TASK_ID"
@@ -190,7 +192,7 @@ function create_bashfile_FA(divisions)
     CMD="/scratch/ferpe/julia-1.9.4/bin/julia --compiled-modules=no $JULIA_SCRIPT \
     $SLURM_ARRAY_TASK_ID $SLURM_ARRAY_TASK_MAX $SLURM_ARRAY_JOB_ID \
     $dirj $dirE $dirB $T $evals \
-    $omega_switch $ps_switch $qm_switch $fermi_surface \
+    $omega_switch $ps_switch $ps_orbital_switch $qm_switch $fermi_surface \
     $epsilon $which_mm $integration_method \
     $t $tp $Delta $tpz $tc \
     $mumin $mumax $mupoints"

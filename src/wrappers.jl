@@ -105,7 +105,7 @@ end
 
 function sigma_abc_ferroaxial_wrapper_3d(p; 
     dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-    omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+    omega_MM_switch = true, PS_switch = true, PS_orbital_switch = true, QM_switch = true, fermi_surface = false,
     epsilon = 1e-7, which_mm = :orbital, 
     integration_method = :montercarlo, 
     botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5], a = 1.0)
@@ -124,9 +124,9 @@ function sigma_abc_ferroaxial_wrapper_3d(p;
     Gs = dualbasis(Rs)
     computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
     return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
-        omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+        omega_MM_switch, PS_switch, PS_orbital_switch, QM_switch, fermi_surface, epsilon)
 end
-# threeband ferroaxial 
+
 modelpresets_3bandFA(; μ =0, t =1 ,tp =0.5, Δ = 1, tpz = 0.5, tc = 0.5, U = 1, t_ca = 1, t_cb = 1) = 
     ThreeBandsFerroAxialHam(μ, t,tp,Δ, tpz, tc, U, t_ca, t_cb)
 @with_kw struct ThreeBandsFerroAxialHam
@@ -140,57 +140,10 @@ modelpresets_3bandFA(; μ =0, t =1 ,tp =0.5, Δ = 1, tpz = 0.5, tc = 0.5, U = 1,
     t_ca::Float64
     t_cb::Float64
 end
-"""
-structure wrapper botbounds and topbounds in [-0.5,0.5]
-"""
-function sigma_abc_ferroaxial_wrapper_2d(p; 
-        dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-        omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
-        epsilon = 1e-7, which_mm = :orbital, 
-        integration_method = :montercarlo, 
-        botbounds = [-0.5,-0.5], topbounds = [0.5,0.5])
-    h(q) = ferroaxial_ham2d(q,p.μ,p.Δ,p.t, p.tp)
-    dhx(q) = d_ferroaxial_ham2d(p.t,p.tp,p.Δ,q,:x)
-    dhy(q) = d_ferroaxial_ham2d(p.t,p.tp,p.Δ,q,:y)
-    dh(q) = [dhx(q), dhy(q)]
-    didjh(q,i,j) = d2_ferroaxial_ham2d(p.t,p.tp,q,i,j)
-    ddh(q) = [[didjh(q,:x,:x), didjh(q,:x,:y)],
-            [didjh(q,:y,:x), didjh(q,:y,:y)]]
-    a = 1
-    Rs = (a .* [1.0, 0], a .* [-1/2, √3/2])
-    Gs = dualbasis(Rs)
-    computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
-    return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
-        omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
-end
-
-function sigma_abc_ferroaxial_wrapper_3d(p; 
-    dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-    omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
-    epsilon = 1e-7, which_mm = :orbital, 
-    integration_method = :montercarlo, 
-    botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5], a = 1.0)
-
-    h(q) = ferroaxial_ham3d(q,p.μ,p.Δ,p.t, p.tp, p.tpz, p.tc)
-    dhx(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,p.tpz,p.tc,q,:x)
-    dhy(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,p.tpz,p.tc,q,:y)
-    dhz(q) = d_ferroaxial_ham3d(p.t,p.tp,p.Δ,p.tpz,p.tc,q,:z)
-    dh(q) = [dhx(q), dhy(q), dhz(q)]
-    didjh(q,i,j) = d2_ferroaxial_ham3d(p.t,p.tp,p.tpz,p.tc,q,i,j)
-    ddh(q) = [[didjh(q,:x,:x), didjh(q,:x,:y), didjh(q,:x,:z)], 
-            [didjh(q,:y,:x), didjh(q,:y,:y), didjh(q,:y,:z)],
-            [didjh(q,:z,:x), didjh(q,:z,:y), didjh(q,:z,:z)]]
-    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
-    Rs = [a1,a2,a3]
-    Gs = dualbasis(Rs)
-    computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
-    return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
-        omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
-end
 
 function sigma_abc_ferroaxial_wrapper_3d_3bands(p; 
     dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
-    omega_MM_switch = true, PS_switch = true, QM_switch = true, fermi_surface = false,
+    omega_MM_switch = true, PS_switch = true, PS_orbital_switch = true, QM_switch = true, fermi_surface = false,
     epsilon = 1e-7, which_mm = :orbital, 
     integration_method = :montercarlo, 
     botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5], a = 1.0)
@@ -209,5 +162,42 @@ function sigma_abc_ferroaxial_wrapper_3d_3bands(p;
     Gs = dualbasis(Rs)
     computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
     return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
-        omega_MM_switch, PS_switch, QM_switch, fermi_surface, epsilon)
+        omega_MM_switch, PS_switch, PS_orbital_switch, QM_switch, fermi_surface, epsilon)
+end
+
+
+modelpresets_FA_spinfull(; μ =0, t =1 ,tp =0.5, Δ = 1, tpz = 0.5, tc = 0.5, tλ = 1) = 
+    FerroAxialHam_spinfull(μ,t,tp,Δ,tpz,tc,tλ)
+@with_kw struct FerroAxialHam_spinfull
+    μ::Float64
+    t::Float64
+    tp::Float64
+    Δ::Float64
+    tpz::Float64
+    tc::Float64
+    tλ::Float64
+end
+
+function sigma_abc_ferroaxial_wrapper_3d_spinfull(p; 
+    dirj=:x, dirE=:y, dirB=:z, T = 1, τ = 200, evals = 100, 
+    omega_MM_switch = true, PS_switch = true,PS_orbital_switch =true, QM_switch = true, fermi_surface = false,
+    epsilon = 1e-7, which_mm = :orbital, 
+    integration_method = :montercarlo, 
+    botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5], a = 1.0)
+
+    h(q) = ferroaxial_ham3d_spinfull(q,p.μ,p.Δ,p.t, p.tp, p.tpz, p.tc, p.tλ)
+    dhx(q) = d_ferroaxial_ham3d_spinfull(p.t,p.tp,p.Δ,p.tpz,p.tc, p.tλ,q,:x)
+    dhy(q) = d_ferroaxial_ham3d_spinfull(p.t,p.tp,p.Δ,p.tpz,p.tc, p.tλ,q,:y)
+    dhz(q) = d_ferroaxial_ham3d_spinfull(p.t,p.tp,p.Δ,p.tpz,p.tc, p.tλ ,q,:z)
+    dh(q) = [dhx(q), dhy(q), dhz(q)]
+    didjh(q,i,j) = d2_ferroaxial_ham3d_spinfull(p.t,p.tp,p.tpz,p.tc, p.tλ, q,i,j)
+    ddh(q) = [[didjh(q,:x,:x), didjh(q,:x,:y), didjh(q,:x,:z)], 
+            [didjh(q,:y,:x), didjh(q,:y,:y), didjh(q,:y,:z)],
+            [didjh(q,:z,:x), didjh(q,:z,:y), didjh(q,:z,:z)]]
+    a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
+    Rs = [a1,a2,a3]
+    Gs = dualbasis(Rs)
+    computation = Transport_computation_3d_presets(botbounds,topbounds, evals, integration_method)
+    return Quantum_correction_σijk_antisym(a, dirj, dirE, dirB, h, dh, ddh, Gs, τ, T, computation, which_mm,
+        omega_MM_switch, PS_switch, PS_orbital_switch, QM_switch, fermi_surface, epsilon)
 end
