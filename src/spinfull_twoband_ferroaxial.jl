@@ -5,7 +5,7 @@ function ferroaxial_ham3d_spinfull(k,  μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0
     a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [ δ1, δ2, δ3 ]
     h = ferroaxial_ham3d(k, μ, Δ, t, tp, tp_z, tc)
-    return kron([1 0; 0 1], h) .+ kane_mele_soc(k, tλ, ds) 
+    return kron(I(2), h) .+ kane_mele_soc(k, tλ, ds)  .+ 0*kron([0 0; 0 10],[1 0; 0 1])
 end
 
 function d_ferroaxial_ham3d_spinfull(t,tp,Δ,tpz,tc, tλ, q, dir)
@@ -15,7 +15,6 @@ function d_ferroaxial_ham3d_spinfull(t,tp,Δ,tpz,tc, tλ, q, dir)
     dh = d_ferroaxial_ham3d(t,tp,Δ,tpz,tc, q, dir) 
     return kron([1 0; 0 1], dh) + d_kane_mele_soc(q, tλ, ds, dir) 
 end
-
 
 function d2_ferroaxial_ham3d_spinfull(t,tp,tpz,tc, tλ, q, dir1, dir2)
     a = 1.0
@@ -43,7 +42,7 @@ d_kane_mele_soc(k, tλ, d1, d2, d3, dir) =
 d2_kane_mele_soc(k, tλ, d1, d2, d3, dir1, dir2) = 
     2*tλ*sum([-δ[symb_to_ind(dir1)]*δ[symb_to_ind(dir2)]*sin(dot(k, δ)) for δ in [d1-d2, d2-d3, d3-d1]])
     
-sigmazsz_directproduct(soc) = kron([1 0; 0 -1],  kron([1 0; 0 -1], soc))
+sigmazsz_directproduct(soc) = soc * kron([1 0; 0 -1], [1 0; 0 -1])
 
 # function d_ferroaxial_ham3d_spinfull()
 
