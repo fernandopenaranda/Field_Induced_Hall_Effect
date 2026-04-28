@@ -9,7 +9,7 @@ function ferroaxial_ham3d_spinfull(k,  μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0
     sy = [0 -im; im 0]
     h = ferroaxial_ham3d(k, μ, Δ, t, tp, tp_z, tc)
 
-    return kron(I(2), h) .+ kane_mele_soc(k, tλ, ds)  .+ tsx * kron(I(2), sx) + tsy * kron(I(2), sy)
+    return kron(I(2), h) .+ kane_mele_soc(k, tλ, ds)  .+ tsx * kron(sx,I(2)) + tsy * kron(sy,I(2))
 end
 
 function d_ferroaxial_ham3d_spinfull(t,tp,Δ,tpz,tc, tλ, q, dir)
