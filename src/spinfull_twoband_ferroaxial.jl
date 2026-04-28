@@ -1,11 +1,15 @@
 
 
-function ferroaxial_ham3d_spinfull(k,  μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0.5, tc = 0.5, tλ = 1)
+function ferroaxial_ham3d_spinfull(k,  μ = 0, Δ = 1, t = 1, tp = 0.5, tp_z = 0.5, tc = 0.5, tλ = 1, tsx = 1, tsy = 1)
     a = 1.0
     a1, a2, a3, δ1, δ2, δ3 = lattice_vectors(a)
     ds = [ δ1, δ2, δ3 ]
+
+    sx = [0 1; 1 0]
+    sy = [0 -im; im 0]
     h = ferroaxial_ham3d(k, μ, Δ, t, tp, tp_z, tc)
-    return kron(I(2), h) .+ kane_mele_soc(k, tλ, ds)  .+ 0*kron([0 0; 0 10],[1 0; 0 1])
+
+    return kron(I(2), h) .+ kane_mele_soc(k, tλ, ds)  .+ tsx * kron(I(2), sx) + tsy * kron(I(2), sy)
 end
 
 function d_ferroaxial_ham3d_spinfull(t,tp,Δ,tpz,tc, tλ, q, dir)

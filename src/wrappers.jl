@@ -166,8 +166,8 @@ function sigma_abc_ferroaxial_wrapper_3d_3bands(p;
 end
 
 
-modelpresets_FA_spinfull(; μ =0, t =1 ,tp =0.5, Δ = 1, tpz = 0.5, tc = 0.5, tλ = 1) = 
-    FerroAxialHam_spinfull(μ,t,tp,Δ,tpz,tc,tλ)
+modelpresets_FA_spinfull(; μ =0, t =1 ,tp =0.5, Δ = 1, tpz = 0.5, tc = 0.5, tλ = 1, tsx = 1, tsy = 1) = 
+    FerroAxialHam_spinfull(μ,t,tp,Δ,tpz,tc,tλ, tsx, tsy)
 @with_kw struct FerroAxialHam_spinfull
     μ::Float64
     t::Float64
@@ -176,6 +176,8 @@ modelpresets_FA_spinfull(; μ =0, t =1 ,tp =0.5, Δ = 1, tpz = 0.5, tc = 0.5, t�
     tpz::Float64
     tc::Float64
     tλ::Float64
+    tsx::Float64
+    tsy::Float64
 end
 
 function sigma_abc_ferroaxial_wrapper_3d_spinfull(p; 
@@ -185,7 +187,7 @@ function sigma_abc_ferroaxial_wrapper_3d_spinfull(p;
     integration_method = :montercarlo, 
     botbounds = [-0.5,-0.5,-0.5], topbounds = [0.5,0.5,0.5], a = 1.0)
 
-    h(q) = ferroaxial_ham3d_spinfull(q,p.μ,p.Δ,p.t, p.tp, p.tpz, p.tc, p.tλ)
+    h(q) = ferroaxial_ham3d_spinfull(q,p.μ,p.Δ,p.t, p.tp, p.tpz, p.tc, p.tλ, p.tsx, p.tsy)
     dhx(q) = d_ferroaxial_ham3d_spinfull(p.t,p.tp,p.Δ,p.tpz,p.tc, p.tλ,q,:x)
     dhy(q) = d_ferroaxial_ham3d_spinfull(p.t,p.tp,p.Δ,p.tpz,p.tc, p.tλ,q,:y)
     dhz(q) = d_ferroaxial_ham3d_spinfull(p.t,p.tp,p.Δ,p.tpz,p.tc, p.tλ ,q,:z)
